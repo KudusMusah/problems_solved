@@ -1,21 +1,26 @@
+from collections import defaultdict
+
 def solve(s):
-    ptr1 = ptr2 = ptr3 = None
+    hashmap = defaultdict(int)
     ans = float("inf")
-
-    for i in range(len(s)):
-        if s[i] == "1": ptr1 = i + 1
-        elif s[i] == "2": ptr2 = i + 1
-        elif s[i] == "3": ptr3 = i + 1
-
-        if ptr1 and ptr2 and ptr3:
-            curr_len = max(ptr1, ptr2, ptr3) - min(ptr1, ptr2, ptr3) + 1
-            ans = min(ans, curr_len)
-
+    
+    l = 0
+    for r in range(len(s)):
+        hashmap[s[r]] += 1
+        
+        while len(hashmap) == 3 and l < r:
+            ans= min(ans, r-l+1)
+            
+            hashmap[s[l]] -= 1
+            if hashmap[s[l]] == 0:
+                del hashmap[s[l]]
+            l += 1
+             
     if ans == float("inf"): ans = 0
-    print(ans)
+    print(ans)            
 
 
 for i in range(int(input())):
     s = input()
-
+    
     solve(s)
